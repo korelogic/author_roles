@@ -478,19 +478,21 @@ Class extension_author_roles extends Extension
 	// name matches the name of the second argument with
 	// the second argument
 	private static function replaceChild($parent, $child) {
-		foreach($parent->getChildren() as $position => $oldChild) {
-			if($oldChild->getName() == $child->getName()) {
-				$parent->replaceChildAt($position,$child);
+        if (is_object($parent)) {
+            foreach($parent->getChildren() as $position => $oldChild) {
+                if(is_object($oldChild) && $oldChild->getName() == $child->getName()) {
+                    $parent->replaceChildAt($position,$child);
 
-				return true;
-			}
+                    return true;
+                }
 
-			if(self::replaceChild($oldChild, $child)) {
-				return true;
-			}
-		}
-		return false;
-	}
+                if(self::replaceChild($oldChild, $child)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 	/** Adjust the entry editor on the publish page
 	 * @param	$context
 	 *  Provided with a page object
